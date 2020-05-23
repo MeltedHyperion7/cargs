@@ -46,6 +46,14 @@ bool parseArguments(int argc, char const *argv[]) {
         } else {
             if(strlen(clArg) > 2 && clArg[0] == '-' && clArg[1] == '-') {
                 // verbose flag
+                char* verboseFlag = clArg + 2 * sizeof(char);
+                flagNode = findNodeFromVerboseFlag(cargs_flags_list, verboseFlag);
+                if(flagNode == NULL) {
+                    success = false;
+                } else {
+                    *(flagNode->flag.set) = true;
+                    flagArgumentNext = flagNode->flag.argument != NULL;
+                }
                 // TODO match verbose flags
             } else if(clArg[0] == '-') {
                 // normal flag
