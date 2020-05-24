@@ -74,3 +74,22 @@ void freeFlagLinkedNode(struct flagLinkedNode* node) {
         free(temp);
     }
 }
+
+struct flagLinkedNode* findNextUnsetNonFlagArgument(struct flagLinkedNode* node) {
+    /*
+    Finds the first unset flag registered with the '.' character.
+    These arguments are passed without an accompanying flag.
+    Returns NULL if no such flag is registered.
+    */
+
+    struct flagLinkedNode* walk = node;
+
+    while(walk != NULL) {
+        if(walk->flag.flagCharacter == '.' && !(*(walk->flag.set))) {
+            return walk;
+        }
+        walk = walk->next;
+    }
+
+    return NULL;
+}

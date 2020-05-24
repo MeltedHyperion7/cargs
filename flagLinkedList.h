@@ -21,6 +21,7 @@ void freeFlagLinkedNode(struct flagLinkedNode* node);
 
 struct flagLinkedNode* findNodeFromFlagCharacter(struct flagLinkedNode* node, char flagCharacter);
 struct flagLinkedNode* findNodeFromVerboseFlag(struct flagLinkedNode* node, char* verboseFlag);
+struct flagLinkedNode* findNextUnsetNonFlagArgument(struct flagLinkedNode* node);
 
 bool requiredFlagNotSet(struct flagLinkedNode* node);
 

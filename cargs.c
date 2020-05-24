@@ -22,8 +22,6 @@ void addFlag(char flagCharacter, char* verboseFlag, bool required, bool* set, ch
     addFlagLinkedNode(&cargs_flags_list, flag);
 }
 
-// * if the last flag expects an argument, pass it in without considering if it is a flag
-// * quotes don't appear in argv
 bool parseArguments(int argc, char const *argv[]) {
     char* clArg;
     bool success = true;
@@ -39,8 +37,6 @@ bool parseArguments(int argc, char const *argv[]) {
         if(flagArgumentNext) {
             // the last flag that was parsed takes an argument
             *(flagNode->flag.argument) = clArg;
-            // ? should we check, after the loop, if the last flag expected an argument and
-            // ? if it was not set then set the "set" flag for that flag to false
 
             flagArgumentNext = false;
         } else {
@@ -54,7 +50,6 @@ bool parseArguments(int argc, char const *argv[]) {
                     *(flagNode->flag.set) = true;
                     flagArgumentNext = flagNode->flag.argument != NULL;
                 }
-                // TODO match verbose flags
             } else if(clArg[0] == '-') {
                 // normal flag
 
@@ -73,15 +68,36 @@ bool parseArguments(int argc, char const *argv[]) {
                 }
             } else {
                 // non flag argument
-                // could register these under the '.' flag
-                // order is determined by the onder in which the flags were
-                // registered
+
+                flagNode = findNextUnsetNonFlagArgument(cargs_flags_list);
+                if(flagNode == NULL) {
+                    success = false;
+                } else {
+                    *(flagNode->flag.set) = true;
+                    if(flagNode->flag.argument != NULL) {
+                        *(flagNode->flag.argument) = clArg;
+                    }
+                }
             }
         }
     }
 
-    // TODO check if any required flags were not set
-    // TODO check if any flags which requried an argument were set but were not given an argument
+    if(flagArgumentNext) {
+        // the last flag expected an argument but none was provided
+        *(flagNode->flag.set) = false;
+        success = false;
+    }
+
+    struct flagLinkedNode* walk = cargs_flags_list;
+
+    while(walk != NULL) {
+        if(walk->flag.required && !(*(walk->flag.set))) {
+            // a required flag was not set
+            success = false;
+        }
+
+        walk = walk->next;
+    }
 
     freeFlagLinkedNode(cargs_flags_list);
     return success;
