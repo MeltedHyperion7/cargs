@@ -36,7 +36,6 @@ int main(int argc, char const *argv[]) {
     // take another necessary argument, without any flag 
     cargsAddFlag('.', NULL, true, &filePathSet, &filePath);
 
-    // 
     bool res = cargsParseArguments(argc, argv);
 
     if(filePathSet) {
