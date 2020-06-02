@@ -2,7 +2,9 @@
 A light, dependency free, command line argument passing library in C.
 ## Usage
 Include the library using  
-`#include "cargs/cargs.h"`  
+```c
+#include "cargs/cargs.h"
+```  
 cargs exposes just two functions.  
 ### `cargsAddFlag`.
 Used to register a flag. Takes the following arguments in order:  
