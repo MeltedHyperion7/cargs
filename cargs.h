@@ -5,9 +5,8 @@
 
 #include "flagLinkedList.h"
 
-// ? is it called verbose flag
-void addFlag(char flagCharacter, char* verboseFlag, bool required, bool* set, char** argument);
+void cargsAddFlag(char flagCharacter, char* verboseFlag, bool required, bool* set, char** argument);
 
-bool parseArguments(int argc, char const *argv[]);
+bool cargsParseArguments(int argc, char const *argv[]);
 
 #endif

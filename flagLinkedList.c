@@ -52,12 +52,15 @@ struct flagLinkedNode* findNodeFromVerboseFlag(struct flagLinkedNode* node, char
     */
 
     struct flagLinkedNode* walk = node;
-    while(walk != NULL) {
-        if(strcmp(walk->flag.verboseFlag, verboseFlag) == 0) {
-            return walk;
-        }
 
-        walk = walk->next;
+    if(verboseFlag != NULL) {
+        while(walk != NULL) {
+            if(walk->flag.verboseFlag != NULL && strcmp(walk->flag.verboseFlag, verboseFlag) == 0) {
+                return walk;
+            }
+
+            walk = walk->next;
+        }
     }
 
     return NULL;

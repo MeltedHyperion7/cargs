@@ -1,5 +1,5 @@
 #include "cargs.h"
-#include "flagLinkedList.h"
+#include "flagLinkedList.c"
 
 #include <stdlib.h>
 #include <stdbool.h>
@@ -7,7 +7,7 @@
 
 struct flagLinkedNode* cargs_flags_list = NULL;
 
-void addFlag(char flagCharacter, char* verboseFlag, bool required, bool* set, char** argument) {
+void cargsAddFlag(char flagCharacter, char* verboseFlag, bool required, bool* set, char** argument) {
     struct flag flag = {
         flagCharacter,
         verboseFlag,
@@ -18,11 +18,14 @@ void addFlag(char flagCharacter, char* verboseFlag, bool required, bool* set, ch
     
     // initialize
     *(flag.set) = false;
+    if(flag.argument != NULL) {
+        *(flag.argument) = NULL;
+    }
 
     addFlagLinkedNode(&cargs_flags_list, flag);
 }
 
-bool parseArguments(int argc, char const *argv[]) {
+bool cargsParseArguments(int argc, char const *argv[]) {
     char* clArg;
     bool success = true;
     bool flagArgumentNext = false;
@@ -52,6 +55,8 @@ bool parseArguments(int argc, char const *argv[]) {
                 }
             } else if(clArg[0] == '-') {
                 // normal flag
+                // ? what if something like -. is passed
+                // ? that would clash with non flag arguments and mess things up
 
                 if(strlen(clArg) != 2) {
                     success = false;
